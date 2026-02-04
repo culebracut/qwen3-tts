@@ -1,6 +1,5 @@
-import torch
 import soundfile as sf
-from qwen_tts import Qwen3TTSModel
+from workspace.QwenTTSModel import QwenTTSManager
 
 """ Single Ellipsis (...): Creates a short, reflective pause.
 Double Ellipsis (......): Forces a significantly longer, dramatic break—perfect for John Wayne’s mid-sentence stops.
@@ -22,7 +21,7 @@ myInputText = "I think......you'd better...... WATER my horse."
 myInputText = "Well, pilgrim, I reckon it's time you moved on."
 
 #myOutputFile = "myWavOutputs/clone/iThink.wav"
-myOutputFile = "/data/Qwen3-TTS/examples/myWavOutputs/clone/pilgrim2.wav"
+myOutputFile = "/data/audio/output/qwen/clone/pilgrim2.wav"
 
 #myOutputFile = "myWavOutputs/clone/Gettysburg.wav"
 myLanguage = "English"
@@ -32,6 +31,10 @@ myLanguage = "English"
 #myInstruct="A deep, gravelly, and authoritative Western-style voice speaking in Mandarin Chinese."
 myInstruct = "A deep, gravelly, rhythmic Western drawl. Slow, punctuated delivery with a weary, authoritative grit."
 #myInstruct= "Speak with a loud, booming, and commanding shout. High energy and authoritative."
+
+myRefAudio = "/data/audio/input/JohnWayne/YouTalkThinkTooMuch.wav" 
+myRefText = "Yyou talk too much...THINK too much"
+
 # Refined instruct tag for timing
 """ myInstruct = (
     "A deep, gravelly voice with an authoritative grit. "
@@ -40,35 +43,11 @@ myInstruct = "A deep, gravelly, rhythmic Western drawl. Slow, punctuated deliver
 
 #myTemperature = 0.9  # Lowering temperature slightly helps stabilize the specific rhythm
 
-# 1. Initialize the Base model (needed for cloning)
-model = Qwen3TTSModel.from_pretrained(
-    "Qwen/Qwen3-TTS-12Hz-1.7B-Base", 
-    device_map="cuda:0", 
-    dtype=torch.bfloat16
-)
-
-# 2. Define your reference material
-# ref_audio can be a local path, URL, or numpy array
-ref_audio = "/data/audio/JohnWayne/YouTalkThinkTooMuch.wav" 
-ref_text = "You talk too much, think too much"
-
+# 1. Instantiate the Base model for cloning
+ttsm = QwenTTSManager()
+# 2. Define reference material
 # 3. Create the reusable VoiceClonePromptItem
-# Setting x_vector_only_mode=False is recommended for higher quality
-prompt_items = model.create_voice_clone_prompt(
-    ref_audio=ref_audio,
-    ref_text=ref_text,
-    x_vector_only_mode=False
-)
-
+ttsm.set_voice_clone(ref_audio=myRefAudio, ref_text=myRefText)
 # 4. Generate speech with an instruction/style tag
-# Style tags are passed as 'instruct' to the generation function
-wavs, sr = model.generate_voice_clone(
-    text=myInputText,
-    language=myLanguage,
-    voice_clone_prompt=prompt_items,
-    instruct=myInstruct,
-    #temperature=myTemperature, 
-)
-
-# 5. Save the output
+wavs, sr = ttsm.generate(myInputText, myInstruct)
 sf.write(myOutputFile, wavs[0], sr)
