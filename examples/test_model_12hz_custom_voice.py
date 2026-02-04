@@ -46,10 +46,10 @@ def main():
     t1 = time.time()
     print(f"[CustomVoice Single] time: {t1 - t0:.3f}s")
 
-    sf.write("qwen3_tts_test_custom_single.wav", wavs[0], sr)
+    sf.write("myWavOutputs/custom/qwen3_tts_test_custom_single.wav", wavs[0], sr)
 
     # -------- Batch (some empty instruct) --------
-    texts = ["其实我真的有发现，我是一个特别善于观察别人情绪的人。", "She said she would be here by noon."]
+    texts = ["其实我真的有发现，我是一个特别善于观察别人情绪的人。", "I think...you'd better...water my horse."]
     languages = ["Chinese", "English"]
     speakers = ["Vivian", "Ryan"]
     instructs = ["", "Very happy."]
@@ -70,7 +70,7 @@ def main():
     print(f"[CustomVoice Batch] time: {t1 - t0:.3f}s")
 
     for i, w in enumerate(wavs):
-        sf.write(f"qwen3_tts_test_custom_batch_{i}.wav", w, sr)
+        sf.write(f"myWavOutputs/custom/qwen3_tts_test_custom_batch_{i}.wav", w, sr)
 
 
 if __name__ == "__main__":

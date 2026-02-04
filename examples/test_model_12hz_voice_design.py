@@ -45,7 +45,7 @@ def main():
     t1 = time.time()
     print(f"[VoiceDesign Single] time: {t1 - t0:.3f}s")
 
-    sf.write("qwen3_tts_test_voice_design_single.wav", wavs[0], sr)
+    sf.write("myWavOutputs/Design/qwen3_tts_test_voice_design_single.wav", wavs[0], sr)
 
     # -------- Batch --------
     texts = [
@@ -56,6 +56,7 @@ def main():
     instructs = [
         "体现撒娇稚嫩的萝莉女声，音调偏高且起伏明显，营造出黏人、做作又刻意卖萌的听觉效果。",
         "Speak in an incredulous tone, but with a hint of panic beginning to creep into your voice."
+    #    "Speak in an happy tone, but with a hint of panic beginning to creep into your voice."
     ]
 
     torch.cuda.synchronize()
@@ -73,7 +74,7 @@ def main():
     print(f"[VoiceDesign Batch] time: {t1 - t0:.3f}s")
 
     for i, w in enumerate(wavs):
-        sf.write(f"qwen3_tts_test_voice_design_batch_{i}.wav", w, sr)
+        sf.write(f"myWavOutputs/Design/qwen3_tts_test_voice_design_batch_{i}.wav", w, sr)
 
 
 if __name__ == "__main__":
