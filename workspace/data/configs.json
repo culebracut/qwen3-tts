@@ -1,0 +1,48 @@
+{
+  "project_metadata": {
+    "file_path": "/data/audio/output/qwen/clone/",
+    "model_path":"/data/models/qwen/Qwen3-TTS-12Hz-1.7B-Base"
+  },
+  "audio_clips": {
+    "duke_horse": {
+      "text": "I think......you'd better...... WATER my horse.",
+      "output_file": "duke_horse.wav",
+      "language": "English",
+      "instruct": "A deep, gravelly, rhythmic Western drawl. Slow, punctuated delivery with a weary, authoritative grit.",
+      "ref_audio": "/data/audio/input/JohnWayne/YouTalkThinkTooMuch.wav",
+      "ref_text": "Yyou talk too much...THINK too much"
+    },
+    "duke_pilgrim": {
+      "text": "LISTEN...... pilgrim. I said...... don't *ever*...... touch that saddle again.",
+      "output_file": "duke_pilgrim.wav",
+      "language": "English",
+      "instruct": "A deep, gravelly, rhythmic Western drawl.",
+      "ref_audio": "/data/audio/input/JohnWayne/YouTalkThinkTooMuch.wav",
+      "ref_text": "You talk too much......THINK too much"
+    },
+    "duke_mandarin": {
+      "text": "我想……你最好……去给我的马喂点水。",
+      "output_file": "/data/audio/output/qwen/clone/duke_cn.wav",
+      "language": "English",
+      "instruct": "A deep, gravelly, and authoritative Western-style voice speaking in Mandarin Chinese.",
+      "ref_audio": "/data/audio/input/JohnWayne/YouTalkThinkTooMuch.wav",
+      "ref_text": "Yyou talk too much...THINK too much"
+      },
+    "duke_gettysburg": {
+      "text": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal. “Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war. ",
+      "output_file": "/data/audio/output/qwen/clone/duke_gettysburg.wav",
+      "language": "English",
+      "instruct": "A solemn, rhythmic, and authoritative historical narration.",
+      "ref_audio": "/data/audio/input/JohnWayne/JW.wav",
+      "ref_text": "This that the White Man calls charity is a fine thing for widows and orphans, but no warrior can accept it, for if he does, he is no longer a man and when he is no longer a man, he is nothing and better off dead."
+      },
+    "hindu_woman": {
+      "text": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal. “Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war. ",
+      "output_file": "/data/audio/output/qwen/clone/hindu_woman.wav",
+      "language": "English",
+      "instruct": "A solemn, rhythmic, and authoritative historical narration from an Indian woman.",
+      "ref_audio": "/data/audio/input/hindu/hindu_woman.wav",
+      "ref_text": "She used to go for the concerts, traveling in a third class. If it was an overnight journey, she didn't sleep. And as I grew, she started taking with me along, a little bit of assistance from my side, playing the tantra and that sort of a thing. And I do remember that I used to keep my head on my mother's shoulder and I used to just travel throughout the night. And then that was a time when our D"
+      }
+  }
+}

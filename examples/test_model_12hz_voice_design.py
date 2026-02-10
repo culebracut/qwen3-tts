@@ -22,7 +22,7 @@ from qwen_tts import Qwen3TTSModel
 
 def main():
     device = "cuda:0"
-    MODEL_PATH = "Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/"
+    MODEL_PATH = "/data/models/qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/"
 
     tts = Qwen3TTSModel.from_pretrained(
         MODEL_PATH,
@@ -32,31 +32,36 @@ def main():
     )
 
     # -------- Single --------
-    torch.cuda.synchronize()
-    t0 = time.time()
+    # torch.cuda.synchronize()
+    # t0 = time.time()
 
-    wavs, sr = tts.generate_voice_design(
-        text="哥哥，你回来啦，人家等了你好久好久了，要抱抱！",
-        language="Chinese",
-        instruct="体现撒娇稚嫩的萝莉女声，音调偏高且起伏明显，营造出黏人、做作又刻意卖萌的听觉效果。",
-    )
+    # wavs, sr = tts.generate_voice_design(
+    #     text="哥哥，你回来啦，人家等了你好久好久了，要抱抱！",
+    #     language="Chinese",
+    #     instruct="体现撒娇稚嫩的萝莉女声，音调偏高且起伏明显，营造出黏人、做作又刻意卖萌的听觉效果。",
+    # )
 
-    torch.cuda.synchronize()
-    t1 = time.time()
-    print(f"[VoiceDesign Single] time: {t1 - t0:.3f}s")
+    # torch.cuda.synchronize()
+    # t1 = time.time()
+    # print(f"[VoiceDesign Single] time: {t1 - t0:.3f}s")
 
-    sf.write("myWavOutputs/Design/qwen3_tts_test_voice_design_single.wav", wavs[0], sr)
+    # sf.write("/data/audio/output/qwen/design/qwen3_tts_test_voice_design_single.wav", wavs[0], sr)
 
     # -------- Batch --------
     texts = [
         "哥哥，你回来啦，人家等了你好久好久了，要抱抱！",
-        "It's in the top drawer... wait, it's empty? No way, that's impossible! I'm sure I put it there!"
+        #"It's in the top drawer... wait, it's empty? No way, that's impossible! I'm sure I put it there!"
+        "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal. “Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war.",
+        "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal. “Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war.",
+        "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal. “Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war.",
+        #"Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal. “Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war."
     ]
-    languages = ["Chinese", "English"]
+    languages = ["Chinese", "English","English","English"]
     instructs = [
         "体现撒娇稚嫩的萝莉女声，音调偏高且起伏明显，营造出黏人、做作又刻意卖萌的听觉效果。",
-        "Speak in an incredulous tone, but with a hint of panic beginning to creep into your voice."
-    #    "Speak in an happy tone, but with a hint of panic beginning to creep into your voice."
+        "A male voice with a rhythmic, staccato delivery and sharp tonal shifts. The pitch is high and unstable, sounding incredulous and increasingly frantic with audible breathiness.",
+        "Speak in an happy tone, but with a hint of panic beginning to creep into your voice.",
+        "A mid-pitched male voice with a storytelling flair, using dramatic pauses and varied intonation."
     ]
 
     torch.cuda.synchronize()
@@ -74,7 +79,7 @@ def main():
     print(f"[VoiceDesign Batch] time: {t1 - t0:.3f}s")
 
     for i, w in enumerate(wavs):
-        sf.write(f"myWavOutputs/Design/qwen3_tts_test_voice_design_batch_{i}.wav", w, sr)
+        sf.write(f"/data/audio/output/qwen/design/qwen3_tts_test_voice_design_batch_{i}.wav", w, sr)
 
 
 if __name__ == "__main__":
