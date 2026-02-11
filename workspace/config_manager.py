@@ -14,6 +14,7 @@ class ConfigLoader:
         metadata = json_data.get("project_metadata", {})
         self.base_output_dir = metadata.get("file_path", "")
         self.model_path = metadata.get("model_path")
+        self.cache_path = metadata.get("cache_path")
         self.audio_clips = json_data.get('audio_clips',{})
 
     def get_task(self, key):

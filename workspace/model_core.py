@@ -2,41 +2,37 @@ import torch
 import numpy as np
 import random
 from qwen_tts import Qwen3TTSModel
+from qwen_tts.inference.qwen3_tts_model import VoiceClonePromptItem
+
+# Allow the specific Qwen data type for security
+torch.serialization.add_safe_globals([VoiceClonePromptItem])
 
 class QwenModelContainer:
-    """Isolates the AI model loading and inference."""
-    def __init__(self, model_path="Qwen/Qwen3-TTS-12Hz-1.7B-Base"):
-        # Check for CUDA; fallback to CPU if necessary
+    def __init__(self, model_path):
         self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
-        
-        # Load model with bfloat16 for high efficiency on modern GPUs (A100/H100/30/40 series)
         self.model = Qwen3TTSModel.from_pretrained(
             model_path, 
             device_map=self.device, 
             dtype=torch.bfloat16
         )
 
-    def apply_seed(self,seed):
-        """Resets all random number generators to a fixed state."""
-        if seed is not None and seed != -1:
-            random.seed(seed)
-            np.random.seed(seed)
-            torch.manual_seed(seed)
-            torch.cuda.manual_seed_all(seed)
-            # Ensures internal GPU algorithms are consistent
-            torch.backends.cudnn.deterministic = True
-            torch.backends.cudnn.benchmark = False
-            print(f"Set seed to: {seed}")
-        else:
-            # Handle random generation if seed is -1 or missing
-            new_seed = random.randint(0, 10**6)
-            random.seed(new_seed)
-            torch.manual_seed(new_seed)
-            print(f"Using random seed: {new_seed}")
-        
+    def save_persona(self, prompt, path):
+        """Hides torch.save from other classes."""
+        torch.save(prompt, path)
+
+    def load_persona(self, path):
+        """Hides torch.load and device mapping from other classes."""
+        return torch.load(path, map_location=self.device, weights_only=True)
+
+    def apply_seed(self, seed):
+        if seed is None or seed == -1:
+            seed = random.randint(0, 1000000)
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+
     def create_prompt(self, ref_audio, ref_text):
-        """Processes reference audio into a voice vector."""
-        # Use no_grad to save memory during prompt creation
         with torch.no_grad():
             return self.model.create_voice_clone_prompt(
                 ref_audio=ref_audio,
@@ -44,12 +40,8 @@ class QwenModelContainer:
                 x_vector_only_mode=False
             )
     
-    def generate(self, text, language, prompt, instruct, seed, temp=0.7):
-        """Performs the actual TTS generation."""
-        
+    def generate(self, text, language, prompt, instruct, seed, temp):
         self.apply_seed(seed)
-
-        # Wrap in no_grad to prevent memory leaks and speed up generation
         with torch.no_grad():
             wav, sr = self.model.generate_voice_clone(
                 text=text,
@@ -58,4 +50,14 @@ class QwenModelContainer:
                 instruct=instruct,
                 temperature=temp
             )
+            
+            # Convert to Numpy and fix shape for Soundfile
+            if torch.is_tensor(wav):
+                wav = wav.cpu().float().numpy()
+            
+            # Squeeze and Reshape to (Samples, 1) for soundfile compatibility
+            wav = np.squeeze(wav)
+            if wav.ndim == 1:
+                wav = wav.reshape(-1, 1)
+                
             return wav, sr
