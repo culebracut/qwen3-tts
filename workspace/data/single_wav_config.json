@@ -1,7 +1,8 @@
 {
   "project_metadata": {
     "file_path": "/data/audio/output/qwen/clone/",
-    "model_path":"/data/models/qwen/Qwen3-TTS-12Hz-1.7B-Base"
+    "model_path":"/data/models/qwen/Qwen3-TTS-12Hz-1.7B-Base",
+    "cache_path":"/data/cache"
   },
   "audio_clips": {
     "hindu_woman": {

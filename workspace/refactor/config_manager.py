@@ -13,6 +13,7 @@ class ConfigLoader:
         metadata = json_data.get("project_metadata", {})
         self.base_output_dir = metadata.get("file_path", "")
         self.model_path = metadata.get("model_path")
+        self.cache_path = metadata.get("cache_path")
         
         # Global defaults if missing in individual clips
         self.default_seed = metadata.get("seed", 42)

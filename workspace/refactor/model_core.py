@@ -2,6 +2,10 @@ import torch
 import numpy as np
 import random
 from qwen_tts import Qwen3TTSModel
+from qwen_tts.inference.qwen3_tts_model import VoiceClonePromptItem
+
+# 1. Move the security allowlist here
+torch.serialization.add_safe_globals([VoiceClonePromptItem])
 
 class QwenModelContainer:
     def __init__(self, model_path):
@@ -13,16 +17,12 @@ class QwenModelContainer:
         )
 
     def apply_seed(self, seed):
-        """Resets RNG for bit-perfect reproducibility per task."""
         if seed is None or seed == -1:
             seed = random.randint(0, 1000000)
-            
         random.seed(seed)
         np.random.seed(seed)
         torch.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
-        torch.backends.cudnn.deterministic = True
-        torch.backends.cudnn.benchmark = False
 
     def create_prompt(self, ref_audio, ref_text):
         with torch.no_grad():
@@ -42,4 +42,12 @@ class QwenModelContainer:
                 instruct=instruct,
                 temperature=temp
             )
+            
+            # 2. Convert to Numpy HERE so main.py doesn't need Torch
+            if torch.is_tensor(wav):
+                wav = wav.cpu().float().numpy()
+            
+            # Ensure 1D array for soundfile
+            wav = wav[0]
+                
             return wav, sr

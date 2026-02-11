@@ -3,8 +3,8 @@ import soundfile as sf
 import torch
 from model_core import QwenModelContainer
 from config_manager import ConfigLoader
-from voice_persona_manager import PersonaManager
-from voice_persona_manager import VoiceGenerationService
+from persona_cache import PersonaManager
+from voice_generation import VoiceGenerationService
 
 def main():
     config_path = "/data/Qwen3-TTS/workspace/data/single_wav_config.json"
@@ -12,7 +12,7 @@ def main():
     
     # Init components
     core = QwenModelContainer(loader.model_path)
-    personas = PersonaManager(core)
+    personas = PersonaManager(core, loader.cache_path)
     service = VoiceGenerationService(core, loader, personas)
 
     for result in service.generate_tasks():
@@ -28,7 +28,7 @@ def main():
         #if wav.ndim > 1:
         wav = wav[0]
 
-        sf.write(save_path, wav, sr)
+        sf.write(save_path, result["wav"], result["sr"])
         print(f"✅ Saved: {result['key']} (Path: {save_path})")
 
 if __name__ == "__main__":
