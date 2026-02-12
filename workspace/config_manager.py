@@ -14,9 +14,10 @@ class ConfigLoader:
         metadata = json_data.get("project_metadata", {})
 
         # save
-        self.base_output_dir = metadata.get("file_path", "")
+        self.script_path = metadata.get("script_path", "")
         self.model_path = metadata.get("model_path")
         self.cache_path = metadata.get("cache_path")
+        self.base_output_dir = metadata.get("file_path", "")
         self.default_seed = metadata.get("seed", 42)
         self.default_temp = metadata.get("temp", 0.7)
         

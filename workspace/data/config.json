@@ -1,5 +1,6 @@
 {
   "project_metadata": {
+    "script_path": "/data/Qwen3-TTS/workspace/data/script.txt",
     "file_path": "/data/audio/output/",
     "model_path":"/data/models/qwen/Qwen3-TTS-12Hz-1.7B-Base",
     "cache_path":"/data/cache",
