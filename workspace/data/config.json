@@ -1,6 +1,6 @@
 {
   "project_metadata": {
-    "file_path": "/data/audio/output/qwen/clone/",
+    "file_path": "/data/audio/output/",
     "model_path":"/data/models/qwen/Qwen3-TTS-12Hz-1.7B-Base",
     "cache_path":"/data/cache",
     "seed": 42,
@@ -9,8 +9,6 @@
   "personas": [
       {
       "id":"mandarin_woman",
-      "seed": 42,
-      "temp": 0.7,
       "language": "English",
       "instruct": [
         "A middle-aged Chinese woman.",
@@ -32,7 +30,6 @@
         "A weary, authoritative grit."
       ],
       "text": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal. “Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war. ",
-      "output_file": "/data/audio/output/qwen/clone/duke_gettysburg.wav",
       "ref_audio": "/data/audio/input/JohnWayne/JW.wav",
       "ref_text": "This that the White Man calls charity is a fine thing for widows and orphans, but no warrior can accept it, for if he does, he is no longer a man and when he is no longer a man, he is nothing and better off dead."
       },
@@ -47,7 +44,6 @@
         "A weary, authoritative grit."
       ],
       "text": "LISTEN...... pilgrim. I said...... don't *ever*...... touch that saddle again.  I think...You'd better...WATER my horse,",
-      "output_file": "/data/audio/output/qwen/clone/duke_quip.wav",
       "ref_audio": "/data/audio/input/JohnWayne/JW.wav",
       "ref_text": "This that the White Man calls charity is a fine thing for widows and orphans, but no warrior can accept it, for if he does, he is no longer a man and when he is no longer a man, he is nothing and better off dead."
       }
