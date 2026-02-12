@@ -4,32 +4,31 @@ class VoiceGenerationService:
         self.configs = config_manager
         self.personas = persona_manager
 
-    def process_task(self, key, dry_run=False):
-        cfg = self.configs.get_task(key)
-        if not cfg:
+    def process_task(self, task, dry_run=False):
+        if not task:
             return None
 
         # Extract the pre-merged path from our ConfigLoader
-        save_path = cfg.get("full_output_path")
+        save_path = task.get("full_output_path")
 
         # Actual AI execution
-        persona = self.personas.get_persona(cfg["ref_audio"], cfg["ref_text"])
+        persona = self.personas.get_persona(task["ref_audio"], task["ref_text"])
         wav, sr = self.engine.generate(
-            text=cfg["text"],
-            language=cfg["language"],
+            text=task["text"],
+            language=task["language"],
             prompt=persona,
-            instruct=cfg["instruct"],
-            seed=cfg['seed'],
-            temp=cfg['temp']
+            instruct=task["instruct"],
+            seed=task['seed'],
+            temp=task['temp']
         )
         
         return {
             "wav": wav, 
             "sr": sr, 
             "path": save_path, 
-            "key": key
+            "key": task
         }
 
     def generate_tasks(self):
-        for key in self.configs.get_all_keys():
+        for key in self.personas:
             yield self.process_task(key)

@@ -1,6 +1,6 @@
 import json
 import os
-import copy # Added for data safety
+import copy
 
 class ConfigLoader:
     def __init__(self, config_path):
@@ -10,30 +10,48 @@ class ConfigLoader:
         with open(config_path, 'r', encoding='utf-8') as f:
             json_data = json.load(f)
         
-        # Store metadata
+        # get the json data
         metadata = json_data.get("project_metadata", {})
+
+        # save
         self.base_output_dir = metadata.get("file_path", "")
         self.model_path = metadata.get("model_path")
         self.cache_path = metadata.get("cache_path")
-        self.audio_clips = json_data.get('audio_clips',{})
-
-    def get_task(self, key):
-        """Retrieves a copy of the task with the injected full path."""
-        raw_task = self.audio_clips.get(key)
+        self.default_seed = metadata.get("seed", 42)
+        self.default_temp = metadata.get("temp", 0.7)
         
-        if raw_task:
-            # Create a deep copy so we don't accidentally modify self.clips
-            task = copy.deepcopy(raw_task)
-            
-            # Use the provided output_file or fall back to the key name
-            filename = task.get("output_file", f"{key}.wav")
-            
-            # Build the absolute path
-            task["full_output_path"] = os.path.join(self.base_output_dir, filename)
-            return task
-            
-        return None
+        # 1. Load Quotes for lookup
+        self.quotes = json_data.get('quotes', [])
+        
+        # 2. Load Personas into a dictionary keyed by 'id'
+        self.personas = {p['id']: p for p in json_data.get('personas', [])}
 
-    def get_all_keys(self):
-        """Returns the keys available in the current clip node."""
-        return list(self.audio_clips.keys())
+    def get_task(self, persona_id):
+        raw_persona = self.personas.get(persona_id)
+        if not raw_persona:
+            return None
+        
+        task = copy.deepcopy(raw_persona)
+        
+        # Join instructions if list
+        if isinstance(task.get("instruct"), list):
+            task["instruct"] = " ".join([str(i).strip().rstrip('.') + '.' for i in task["instruct"]])
+        
+        # Cross-reference with quotes: 
+        # If the persona ID is in a quote's apply_to_personas list, override text
+        matching_quote = next((q['text'] for q in self.quotes if persona_id in q.get('apply_to_personas', [])), None)
+        if matching_quote:
+            task["text"] = matching_quote
+
+        # Build absolute path
+        filename = task.get("output_file", f"{persona_id}.wav")
+        # Ensure we don't double-join if output_file is already an absolute path
+        if not os.path.isabs(filename):
+            task["full_output_path"] = os.path.join(self.base_output_dir, filename)
+        else:
+            task["full_output_path"] = filename
+
+        return task
+
+    def get_all_persona_ids(self):
+        return list(self.personas.keys())
