@@ -12,7 +12,7 @@ class VoiceGenerationService:
         save_path = task.get("full_output_path")
 
         # Actual AI execution
-        persona = self.personas.get_persona(task["ref_audio"], task["ref_text"])
+        persona = self.personas.get_persona(task['id'], task["ref_audio"], task["ref_text"])
         wav, sr = self.engine.generate(
             text=task["text"],
             language=task["language"],

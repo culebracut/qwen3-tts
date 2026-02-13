@@ -47,13 +47,13 @@ class ConfigLoader:
         if matching_quote:
             task["text"] = matching_quote
 
-        # Build absolute path
-        filename = task.get("output_file", f"{persona_id}.wav")
-        # Ensure we don't double-join if output_file is already an absolute path
-        if not os.path.isabs(filename):
-            task["full_output_path"] = os.path.join(self.base_output_dir, filename)
-        else:
-            task["full_output_path"] = filename
+        # # Build absolute path
+        # filename = task.get("output_file", f"{persona_id}.wav")
+        # # Ensure we don't double-join if output_file is already an absolute path
+        # if not os.path.isabs(filename):
+        #     task["full_output_path"] = os.path.join(self.base_output_dir, filename)
+        # else:
+        #     task["full_output_path"] = filename
 
         return task
 

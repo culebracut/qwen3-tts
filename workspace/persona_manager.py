@@ -13,7 +13,7 @@ class PersonaManager:
         """Helper for formatted timestamps."""
         return time.strftime("%H:%M:%S")
 
-    def get_persona(self, ref_audio, ref_text):
+    def get_persona(self, id, ref_audio, ref_text):
         ts = self._get_ts()
         
         # 1. RAM Cache
@@ -22,7 +22,7 @@ class PersonaManager:
             return self._memory_cache[ref_audio]
 
         path_hash = hashlib.md5(ref_audio.encode()).hexdigest()[:8]
-        cache_path = os.path.join(self.cache_dir, f"persona_{path_hash}.pt")
+        cache_path = os.path.join(self.cache_dir, f"{id}_{path_hash}.pt")
 
         # 2. Disk Cache
         if os.path.exists(cache_path):
