@@ -1,6 +1,7 @@
 import json
 import os
 import copy
+from utilities.streaming_audio_writer import StreamingAudioWriter
 
 class ConfigLoader:
     def __init__(self, config_path):
@@ -27,6 +28,12 @@ class ConfigLoader:
         
         # 2. Load Personas into a dictionary keyed by 'id'
         self.personas = {p['id']: p for p in json_data.get('personas', [])}
+
+        # create a new WAV file for dialogue output
+        file_path = self.output_path
+        sr = self.default_streaming_rate
+        writer = StreamingAudioWriter(file_path, sr=24000) 
+        self.writer = writer
 
     def get_persona(self, persona_id):
         raw_persona = self.personas.get(persona_id)
