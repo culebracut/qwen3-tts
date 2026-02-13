@@ -16,7 +16,7 @@ def main():
     for p_id in config.get_all_persona_ids():
         
         # get the task data
-        task = config.get_task(p_id)
+        task = config.get_persona(p_id)
         
         print(f"\n--- Processing Persona: {p_id} ---")
         print(f"Target Text: {task['text'][:50]}...") # First 50 chars

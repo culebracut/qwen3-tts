@@ -5,56 +5,46 @@ from config_manager import ConfigLoader
 from persona_manager import PersonaManager
 from voice_service import VoiceGenerationService
 from parse_script import parse_script
+from utilities.streaming_audio_writer import StreamingAudioWriter
 
 # 1. Load your config and your script
-config = ConfigLoader("/data/Qwen3-TTS/workspace/data/config.json")
-script = parse_script(config.script_path)
+metadata = ConfigLoader("/data/Qwen3-TTS/workspace/data/config.json")
 
-# Initialization
-core = QwenModelContainer(config.model_path)
-personas = PersonaManager(core, cache_dir=config.cache_path)
-service = VoiceGenerationService(core, config, personas)
+# Initialization 
+core = QwenModelContainer(metadata.model_path)
+personas = PersonaManager(core, cache_dir=metadata.cache_path)
+service = VoiceGenerationService(core, metadata, personas)
 
-# 2. Iterate through the name-value pairs
-for entry in script:
-    speaker_id = entry["speaker"]
-    dialogue = entry["text"]
+# 2. Iterate through the lines in the script as name/value pairs
+script = parse_script(metadata.script_path)
 
-    # 3. Lookup the Persona metadata from your Config Manager
-    task = config.get_task(speaker_id)
+# create a new WAV file for dialogue output
+file_path = metadata.output_path
+sr = metadata.default_streaming_rate
+writer = StreamingAudioWriter(file_path, sr=24000) 
 
-    if task:
-        # Override the placeholder text with the actual script dialogue
-        task["text"] = dialogue
+for line in script:
+    speaker_id = line["speaker"]
+    dialogue = line["text"]
+
+    # 3. Lookup the Persona metadata
+    persona = metadata.get_persona(speaker_id)
+
+    if persona:
+        # Insert the dialogue into the persona
+        persona["text"] = dialogue
         
-        #print(f"Generating audio for {speaker_id}...")
-        # tts_engine.generate(task)
-        #print(f"\n--- Processing Persona: {speaker_id} ---")
         print(f"\nActor: {speaker_id}")
-        print(f"Dialog: {task['text'][:200]}.") # First 50 chars
-        #print(f"Instructions: {task['instruct']}\n")
+        print(f"Dialog: {dialogue}.") # First 50 chars
 
         # generate_audio(task)
-        result = service.process_task(task)
+        # tts_engine.generate(task)
+        result = service.process_task(persona)
 
-        # Check if file exists to determine mode
-        # 'a' for append, 'w' for create new
-        file_path = "/data/audio/output/earnest.wav"
-        #mode = 'a' if os.path.exists(file_path) else 'w'
-        #with sf.SoundFile(file_path, mode=mode, samplerate=result["sr"], channels=1) as f:
-        #    f.write(result["wav"])
-        if not os.path.exists(file_path):
-            # First time? Create the file normally
-            sf.write(file_path, result["wav"], result["sr"])
-        else:
-            # Append mode using r+
-           with sf.SoundFile(file_path, mode='r+') as f:
-            f.seek(0, sf.SEEK_END) # Go to the very end of the audio
-            f.write(result["wav"])
-
-        #sf.write(result["path"], result["wav"], result["sr"])
-        #print(f"✅ Processed: {result['key']}")
+        writer.write_chunk(result["wav"])
+        print(f"✅ Processed dialogue line/n")
     else:
         print(f"Skipping {speaker_id}: No persona found in config.")
-
-print(f"\n" + "="*30 + "\nScript Complete.")
+    
+writer.close()
+print(f"\n✅" + "="*30 + "\nScript Complete.")
