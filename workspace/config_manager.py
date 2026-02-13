@@ -33,6 +33,9 @@ class ConfigLoader:
             return None
         
         task = copy.deepcopy(raw_persona)
+
+        task['seed'] = task.get("seed") or 42
+        task['temp'] = task.get("temp") or 0.7
         
         # Join instructions if list
         if isinstance(task.get("instruct"), list):
