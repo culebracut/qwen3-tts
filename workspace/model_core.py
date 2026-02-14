@@ -40,15 +40,18 @@ class QwenModelContainer:
                 x_vector_only_mode=False
             )
     
-    def generate(self, text, language, prompt, instruct, seed, temp):
-        self.apply_seed(seed)
+    def generate(self, persona):
+        self.apply_seed(persona["seed"])
         with torch.no_grad():
             wav, sr = self.model.generate_voice_clone(
-                text=text,
-                language=language,
-                voice_clone_prompt=prompt,
-                instruct=instruct,
-                temperature=temp
+                text=persona["text"],
+                language=persona["language"],
+                ref_audio=persona["ref_audio"],
+                ref_text=persona["ref_text"],
+                x_vector_only_mode="False",
+                voice_clone_prompt=persona["prompt"],
+                non_streaming_mode="False",
+                temperature=persona["temp"]
             )
             
             # Convert to Numpy and fix shape for Soundfile

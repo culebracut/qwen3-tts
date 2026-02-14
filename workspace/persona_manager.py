@@ -2,7 +2,7 @@ import os
 import hashlib
 import time  # Only needed here
 
-class PersonaManager:
+class PromptCacheManager:
     def __init__(self, model_container, cache_dir="persona_cache"):
         self.engine = model_container
         self.cache_dir = cache_dir
@@ -13,13 +13,17 @@ class PersonaManager:
         """Helper for formatted timestamps."""
         return time.strftime("%H:%M:%S")
 
-    def get_persona(self, id, ref_audio, ref_text):
+    def get_persona(self, persona):
         ts = self._get_ts()
-        
+
+        ref_audio = persona["ref_audio"]
+        ref_text  = persona["ref_text"]
+
         # 1. RAM Cache (Keep as is)
         if ref_audio in self._memory_cache:
             print(f"[{ts}] 🧠 MEMORY HIT: {os.path.basename(ref_audio)}")
-            return self._memory_cache[ref_audio]
+            prompt = self._memory_cache[ref_audio]
+            return prompt
 
         # If 'id' varies for the same audio, remove {id}_ from the filename.
         path_hash = hashlib.md5(ref_audio.encode()).hexdigest()[:8]

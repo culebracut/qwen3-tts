@@ -1,32 +1,23 @@
 class VoiceGenerationService:
-    def __init__(self, model_container, config_manager, persona_manager):
+    def __init__(self, model_container, config_manager, prompt_cache_manager):
         self.engine = model_container
         self.configs = config_manager
-        self.personas = persona_manager
+        self.prompt = prompt_cache_manager
 
-    def process_task(self, task, dry_run=False):
-        if not task:
+    def process_task(self, persona, dry_run=False):
+        if not persona:
             return None
 
-        # Extract the pre-merged path from our ConfigLoader
-        save_path = task.get("full_output_path")
+        # Call Qwen to apply instruct characteristics to voice
+        prompt = self.prompt.get_persona(persona)
+        persona["prompt"] = prompt
 
-        # Actual AI execution
-        persona = self.personas.get_persona(task['id'], task["ref_audio"], task["ref_text"])
-        wav, sr = self.engine.generate(
-            text=task["text"],
-            language=task["language"],
-            prompt=persona,
-            instruct=task["instruct"],
-            seed=task['seed'],
-            temp=task['temp']
-        )
+        # Call Qwen to generate audio
+        wav, sr = self.engine.generate(persona)
         
         return {
             "wav": wav, 
             "sr": sr, 
-            "path": save_path, 
-            "key": task
         }
 
     def generate_tasks(self):

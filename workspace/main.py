@@ -2,7 +2,7 @@ import os
 import soundfile as sf
 from model_core import QwenModelContainer
 from config_manager import ConfigLoader
-from persona_manager import PersonaManager
+from persona_manager import PromptCacheManager
 from voice_service import VoiceGenerationService
 from parse_script import parse_script
 
@@ -12,7 +12,7 @@ metadata = ConfigLoader("/data/Qwen3-TTS/workspace/data/config.json")
 
 # Initialization 
 core = QwenModelContainer(metadata.model_path)
-personas = PersonaManager(core, cache_dir=metadata.cache_path)
+personas = PromptCacheManager(core, cache_dir=metadata.cache_path)
 service = VoiceGenerationService(core, metadata, personas)
 
 # 2. Iterate through the lines in the script as name/value pairs
