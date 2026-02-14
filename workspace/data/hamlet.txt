@@ -1,8 +1,9 @@
-barnardo:  Who’s there?
+marcellus: ...This is the First Act of Hamlet by William Shakespeare...
+barnardo:  Who’s there?... 
 francisco: Nay, answer me. Stand and unfold yourself.
 barnardo:  Long live the King!
 francisco:  Barnardo?
-barnardo:  He.
+barnardo:  He. 
 francisco: You come most carefully upon your hour.
 barnardo: ’Tis now struck twelve. Get thee to bed, Francisco.
 francisco: For this relief much thanks. ’Tis bitter cold,And I am sick at heart.
