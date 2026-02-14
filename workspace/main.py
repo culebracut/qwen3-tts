@@ -1,8 +1,7 @@
 import os
-import soundfile as sf
 from model_core import QwenModelContainer
 from config_manager import ConfigLoader
-from persona_manager import PromptCacheManager
+from persona_manager import PromptManager
 from voice_service import VoiceGenerationService
 from parse_script import parse_script
 
@@ -12,7 +11,7 @@ metadata = ConfigLoader("/data/Qwen3-TTS/workspace/data/config.json")
 
 # Initialization 
 core = QwenModelContainer(metadata.model_path)
-personas = PromptCacheManager(core, cache_dir=metadata.cache_path)
+personas = PromptManager(core, cache_dir=metadata.cache_path)
 service = VoiceGenerationService(core, metadata, personas)
 
 # 2. Iterate through the lines in the script as name/value pairs
@@ -34,7 +33,7 @@ for line in script:
 
         # generate_audio(task)
         # tts_engine.generate(task)
-        result = service.process_task(persona)
+        result = service.clone_voice(persona)
 
         metadata.writer.write_chunk(result["wav"])
         print(f"✅ Processed dialogue line/n")

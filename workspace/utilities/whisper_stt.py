@@ -15,7 +15,7 @@ def transcribe_whisper(audio_path):
     return result["text"]
 
 if __name__ == "__main__":
-    file_path = "/data/audio/input/mandarin/female-chinese-mandarin.wav"
+    file_path = "/data/audio/input/china/english_mandarin_accent.mp3"
     try:
         transcription = transcribe_whisper(file_path)
         print("\n--- Transcription ---\n")

@@ -4,12 +4,12 @@ class VoiceGenerationService:
         self.configs = config_manager
         self.prompt = prompt_cache_manager
 
-    def process_task(self, persona, dry_run=False):
+    def clone_voice(self, persona, dry_run=False):
         if not persona:
             return None
 
-        # Call Qwen to apply instruct characteristics to voice
-        prompt = self.prompt.get_persona(persona)
+        #call model to create voice characteristics and cache
+        prompt = self.prompt.get_cache(persona["ref_audio"], persona["ref_text"])
         persona["prompt"] = prompt
 
         # Call Qwen to generate audio
@@ -22,4 +22,4 @@ class VoiceGenerationService:
 
     def generate_tasks(self):
         for key in self.personas:
-            yield self.process_task(key)
+            yield self.clone_voice(key)

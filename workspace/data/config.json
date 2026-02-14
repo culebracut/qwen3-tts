@@ -1,7 +1,7 @@
 {
   "project_metadata": {
-    "script_path": "/data/Qwen3-TTS/workspace/data/importance_of_being_earnest.txt",
-    "output_path": "/data/audio/output/importance_of_being_earnest.wav",
+    "script_path": "/data/Qwen3-TTS/workspace/data/hamlet.txt",
+    "output_path": "/data/audio/output/hamlet.wav",
     "model_path":"/data/models/qwen/Qwen3-TTS-12Hz-1.7B-Base",
     "cache_path":"/data/cache",
     "default_streaming_rate":"24000",
@@ -10,19 +10,7 @@
   },
   "personas": [
       {
-      "id":"foo",
-      "language": "English",
-      "description":"Female Chinese Mandarin",
-      "instruct": [
-        "A middle-aged Chinese woman.",
-        "A calm, natural English narration.",
-        "A slight cultural inflection with clear authority."
-      ],
-      "ref_audio": "/data/audio/input/mandarin/female-chinese-mandarin.wav",
-      "ref_text": "几天在浴室书写时，面对着镜子，突然发现左上角的头发闪过一丝荧光。是窗外照进来的阳光反射吗？我用梳子拨了拨，荧光还停在同一个地方，凑近镜子一看，原来是一根白头发。我用手翻翻头发，想看看是不是还有其他的白发，或是半白半黑的头发。我现在像是在干草堆里找银针似的拨弄着发丝，没有，它是唯一的一根。这是头一回发现自己长了根白发，我好奇地用手挑起它，透过镜子仔细观察。这根头发看起来有点像是龙口粉丝般浅白透明。"
-      },
-      {
-      "id":"cecily",
+      "id":"francisco",
       "language": "English",
       "description":"Indian Hindu Woman",
       "instruct": [
@@ -34,7 +22,21 @@
       "ref_text": "She used to go for the concerts, traveling in a third class. If it was an overnight journey, she didn't sleep. And as I grew, she started taking with me along, a little bit of assistance from my side, playing the tantra and that sort of a thing. And I do remember that I used to keep my head on my mother's shoulder and I used to just travel throughout the night. And then that was a time when our D"
       },
       {
-      "id":"miss_prism",
+      "id":"barnardo",
+      "description":"Indian Hindu Man",
+      "seed": 42,
+      "temp": 0.8,
+      "language": "English",
+      "instruct":[
+        "A deep, gravelly, rhythmic Western drawl.",
+        "Very Slow, punctuated delivery.",
+        "A weary, authoritative grit."
+      ],
+      "ref_audio": "/data/audio/input/hindu/hindu_man.wav",
+      "ref_text": "as the daughter of the great vocalist, Mogubai Kurdikar. Your father passed away when you were very small and your mother must have had to endure a great deal of hardship to bring you up and your family. What were those early days of struggle like?"
+      },
+      {
+      "id":"marcellus",
       "description":"duke",
       "seed": 100,
       "temp": 0.9,
@@ -47,31 +49,29 @@
       "ref_audio": "/data/audio/input/JohnWayne/JW.wav",
       "ref_text": "This that the White Man calls charity is a fine thing for widows and orphans, but no warrior can accept it, for if he does, he is no longer a man and when he is no longer a man, he is nothing and better off dead."
       },
-          {
-      "id":"costello",
+      {
+      "id":"horatio",
       "description":"TBD",     
       "language": "English",
       "instruct":[
-        "A deep, gravelly, rhythmic Western drawl.",
-        "Very Slow, punctuated delivery.",
-        "A weary, authoritative grit."
+        "A middle-aged Chinese man.",
+        "A calm, natural English narration.",
+        "A slight cultural inflection with clear authority."
       ],
-      "ref_audio": "/data/audio/input/JohnWayne/JW.wav",
-      "ref_text": "This that the White Man calls charity is a fine thing for widows and orphans, but no warrior can accept it, for if he does, he is no longer a man and when he is no longer a man, he is nothing and better off dead."
+      "ref_audio":"/data/audio/input/china/english_mandarin_accent.mp3",
+      "ref_text": "On May 30, 2013, Chinese American Institute for Empowerment CIE hosted Bay Area Asian American Small Business Symposium at the Indian Community Center in the city of Mupedas. It attracted over 200 Asian American Small Business owners and prospective owners. They listened to the speeches from eight speakers who are from government agencies such as SBA, FDIC, banks and nonprofit organizations that provide small business-related assistance as well as successful business owners."
       },
       {
-      "id":"gwendolen",
-      "description":"TBD",
-      "seed": 42,
-      "temp": 0.8,
+      "id":"TDB",
       "language": "English",
-      "instruct":[
-        "A deep, gravelly, rhythmic Western drawl.",
-        "Very Slow, punctuated delivery.",
-        "A weary, authoritative grit."
+      "description":"Female Chinese Mandarin",
+      "instruct": [
+        "A middle-aged Chinese woman.",
+        "A calm, natural English narration.",
+        "A slight cultural inflection with clear authority."
       ],
-      "ref_audio": "/data/audio/input/hindu/hindu_man.wav",
-      "ref_text": "as the daughter of the great vocalist, Mogubai Kurdikar. Your father passed away when you were very small and your mother must have had to endure a great deal of hardship to bring you up and your family. What were those early days of struggle like?"
+      "ref_audio": "/data/audio/input/china/female-chinese-mandarin.wav",
+      "ref_text": "几天在浴室书写时，面对着镜子，突然发现左上角的头发闪过一丝荧光。是窗外照进来的阳光反射吗？我用梳子拨了拨，荧光还停在同一个地方，凑近镜子一看，原来是一根白头发。我用手翻翻头发，想看看是不是还有其他的白发，或是半白半黑的头发。我现在像是在干草堆里找银针似的拨弄着发丝，没有，它是唯一的一根。这是头一回发现自己长了根白发，我好奇地用手挑起它，透过镜子仔细观察。这根头发看起来有点像是龙口粉丝般浅白透明。"
       }
     ],
     "quotes": [

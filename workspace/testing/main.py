@@ -1,7 +1,7 @@
 import soundfile as sf
 from model_core import QwenModelContainer
 from config_manager import ConfigLoader
-from persona_manager import PromptCacheManager
+from persona_manager import PromptManager
 from voice_service import VoiceGenerationService
 
 def main():
@@ -9,7 +9,7 @@ def main():
     
     # Initialization
     core = QwenModelContainer(config.model_path)
-    personas = PromptCacheManager(core, cache_dir=config.cache_path)
+    personas = PromptManager(core, cache_dir=config.cache_path)
     service = VoiceGenerationService(core, config, personas)
 
     # Loop through every persona ID found in the JSON
@@ -24,7 +24,7 @@ def main():
         print(f"Output Path: {task['full_output_path']}")
     
         # generate_audio(task)
-        result = service.process_task(task)
+        result = service.clone_voice(task)
         sf.write(result["path"], result["wav"], result["sr"])
         print(f"✅ Processed: {result['key']}")
 
