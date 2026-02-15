@@ -1,8 +1,8 @@
-marcellus: ...This is the First Act of Hamlet by William Shakespeare...
+marcellus: This is the First Act of Hamlet by William Shakespeare...
 barnardo:  Who’s there?... 
-francisco: Nay, answer me. Stand and unfold yourself.
+francisco: No, answer me! Stand and unfold yourself!
 barnardo:  Long live the King!
-francisco:  Barnardo?
+francisco: Barnardo??
 barnardo:  He. 
 francisco: You come most carefully upon your hour.
 barnardo: ’Tis now struck twelve. Get thee to bed, Francisco.
@@ -15,7 +15,7 @@ horatio:  Friends to this ground.
 marcellus:  And liegemen to the Dane.
 francisco:  Give you good night.
 marcellus: Oh farewell, honest soldier. Who hath relieved you?
-francisco: Barnardo hath my place. Give you good night. Francisco exits.
+francisco: Barnardo hath my place. Give you good night.
 marcellus:  Holla, Barnardo.
 barnardo:  Say, what, is Horatio there?
 horatio:  A piece of him.

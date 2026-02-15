@@ -4,6 +4,7 @@ from config_manager import ConfigLoader
 from persona_manager import PromptManager
 from voice_service import VoiceGenerationService
 from parse_script import parse_script
+import sounddevice as sd
 
 
 # 1. Load your config and your script
@@ -19,26 +20,26 @@ script = parse_script(metadata.script_path)
 
 for line in script:
     speaker_id = line["speaker"]
-    dialogue = line["text"]
 
-    # 3. Lookup the Persona metadata
+    #Lookup the Persona metadata
     persona = metadata.get_persona(speaker_id)
 
     if persona:
-        # Insert the dialogue into the persona
-        persona["text"] = dialogue
-        
-        print(f"\nActor: {speaker_id}")
-        print(f"Dialog: {dialogue}.") # First 50 chars
+        # # Insert the dialogue into the persona
+        persona["text"] = line["text"]
 
         # generate_audio(task)
         # tts_engine.generate(task)
         result = service.clone_voice(persona)
 
+        print(f"\nActor: {speaker_id}")
+        print(f"Dialog: {persona["text"]}.")
+
+        # append audio to output file
         metadata.writer.write_chunk(result["wav"])
-        print(f"✅ Processed dialogue line/n")
+        sd.play(result["wav"], samplerate=24000) 
     else:
-        print(f"Skipping {speaker_id}: No persona found in config.")
+        print(f"✅Skipping {speaker_id}: No persona found in config.")
     
 metadata.writer.close()
 print(f"\n✅" + "="*30 + "\nScript Complete.")

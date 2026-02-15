@@ -40,22 +40,21 @@ class ConfigLoader:
         if not raw_persona:
             return None
         
-        task = copy.deepcopy(raw_persona)
-
-        task['seed'] = task.get("seed") or 42
-        task['temp'] = task.get("temp") or 0.7
+        persona = copy.deepcopy(raw_persona)
+        persona['seed'] = persona.get("seed") or 42
+        persona['temp'] = persona.get("temp") or 0.7
         
         # Join instructions if list
-        if isinstance(task.get("instruct"), list):
-            task["instruct"] = " ".join([str(i).strip().rstrip('.') + '.' for i in task["instruct"]])
+        if isinstance(persona.get("instruct"), list):
+            persona["instruct"] = " ".join([str(i).strip().rstrip('.') + '.' for i in persona["instruct"]])
         
         # Cross-reference with quotes: 
         # If the persona ID is in a quote's apply_to_personas list, override text
         matching_quote = next((q['text'] for q in self.quotes if persona_id in q.get('apply_to_personas', [])), None)
         if matching_quote:
-            task["text"] = matching_quote
+            persona["text"] = matching_quote
 
-        return task
+        return persona
 
     def get_all_persona_ids(self):
         return list(self.personas.keys())

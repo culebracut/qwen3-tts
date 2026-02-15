@@ -25,13 +25,10 @@ class QwenModelContainer:
             fix_mistral_regex=True
         )
 
-        #self.model.model.generation_config.pad_token_id = self.tokenizer.eos_token_id
-        # Set it in all possible locations
+        # TODO: Set it in all possible locations
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.model.model.config.pad_token_id = self.tokenizer.eos_token_id
         self.model.model.generation_config.pad_token_id = self.tokenizer.eos_token_id
-
-
 
     def save_persona(self, prompt, path):
         """Hides torch.save from other classes."""
@@ -72,7 +69,6 @@ class QwenModelContainer:
             #pad_token_id=self.tokenizer.eos_token_id, # Fixes the warning
             pad_token_id=2150
         )
-
 
         # with torch.no_grad():
         #     wav, sr = self.model.generate_voice_clone(
